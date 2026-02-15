@@ -1,0 +1,12 @@
+{
+  "name": "claude-dotfiles",
+  "version": "1.0.0",
+  "description": "Custom skills for project progress tracking — save/load your work across Claude Code sessions",
+  "author": {
+    "name": "JuChLi",
+    "url": "https://github.com/JuChLi"
+  },
+  "repository": "https://github.com/JuChLi/claude-dotfiles",
+  "license": "MIT",
+  "keywords": ["save", "load", "progress", "session", "dotfiles"]
+}
