@@ -19,11 +19,17 @@ allowed-tools: Bash, Read, Write, Glob, Grep
 
 1. **確認專案根目錄**：根據上方的 Git 狀態確認目前所在的專案，如果不是 Git 專案也可以繼續。
 2. **建立目錄**：確保專案根目錄下有 `.claude/` 資料夾，沒有就建立。
-3. **歸檔舊進度**：
+3. **設定 .gitignore**：如果專案是 Git repo，檢查 `.gitignore` 是否已包含進度檔案的排除規則。如果沒有，追加以下內容（不要覆蓋原有內容）：
+   ```
+   # Claude Code progress (personal working state)
+   .claude/progress.md
+   .claude/progress-history.md
+   ```
+4. **歸檔舊進度**：
    - 讀取 `.claude/progress.md`，如果存在，將其完整內容**插入**到 `.claude/progress-history.md` 的**最前面**。
    - 在歸檔的段落上方加上 `---` 分隔線（第一筆不需要）。
    - 歷史檔案中越上面的紀錄越新。
-4. **寫入最新進度**：覆寫 `.claude/progress.md`，格式如下：
+5. **寫入最新進度**：覆寫 `.claude/progress.md`，格式如下：
 
 ```markdown
 # 專案進度
@@ -52,7 +58,7 @@ allowed-tools: Bash, Read, Write, Glob, Grep
 {已知 bug、臨時 workaround、需要注意的事項，無則寫「無」}
 ```
 
-5. **回報結果**：告知使用者進度已儲存，簡要顯示工作摘要與待辦事項數量。如果有歸檔舊進度，一併告知。
+6. **回報結果**：告知使用者進度已儲存，簡要顯示工作摘要與待辦事項數量。如果有歸檔舊進度，一併告知。
 
 ## 注意事項
 
