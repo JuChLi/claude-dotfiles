@@ -31,24 +31,9 @@ your-project/
 
 ## Install
 
-### Option 1: Plugin (Recommended)
+All methods below install to `~/.claude/skills/` (user-level), so `/save` and `/load` are available **globally across all projects**.
 
-```bash
-# In any Claude Code session, run:
-/plugin install https://github.com/JuChLi/claude-dotfiles
-```
-
-Skills will be namespaced as `/claude-dotfiles:save` and `/claude-dotfiles:load`.
-
-### Option 2: Ask Claude
-
-In any Claude Code session, say:
-
-```
-請幫我從 https://github.com/JuChLi/claude-dotfiles clone 並執行安裝腳本
-```
-
-### Option 3: Manual Install
+### Option 1: Install Script (Recommended)
 
 ```bash
 # Clone
@@ -63,14 +48,30 @@ cd ~/claude-dotfiles-temp
 cd ~ && rm -rf ~/claude-dotfiles-temp
 ```
 
-### Option 4: --add-dir
+### Option 2: Ask Claude
+
+In any Claude Code session, say:
+
+```
+請幫我從 https://github.com/JuChLi/claude-dotfiles clone 並執行安裝腳本
+```
+
+### Option 3: One-liner
 
 ```bash
-# Clone once
-git clone https://github.com/JuChLi/claude-dotfiles.git ~/.claude-dotfiles
+git clone https://github.com/JuChLi/claude-dotfiles.git /tmp/claude-dotfiles && /tmp/claude-dotfiles/install.sh && rm -rf /tmp/claude-dotfiles
+```
 
-# Launch Claude Code with the directory
-claude --add-dir ~/.claude-dotfiles
+PowerShell:
+
+```powershell
+git clone https://github.com/JuChLi/claude-dotfiles.git $env:TEMP\claude-dotfiles; & "$env:TEMP\claude-dotfiles\install.ps1"; Remove-Item -Recurse -Force "$env:TEMP\claude-dotfiles"
+```
+
+## Uninstall
+
+```bash
+rm -rf ~/.claude/skills/save ~/.claude/skills/load
 ```
 
 ## Repository Structure
@@ -78,7 +79,7 @@ claude --add-dir ~/.claude-dotfiles
 ```
 claude-dotfiles/
 ├── .claude-plugin/
-│   └── plugin.json      # Plugin manifest
+│   └── plugin.json      # Plugin manifest (for /plugin install)
 ├── skills/
 │   ├── save/
 │   │   └── SKILL.md     # /save skill
