@@ -11,12 +11,17 @@ Write-Host "Source: $ScriptDir\skills\"
 Write-Host "Target: $TargetDir"
 Write-Host ""
 
+New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
+
 Get-ChildItem "$ScriptDir\skills" -Directory | ForEach-Object {
     $skillName = $_.Name
+    $source = $_.FullName
     $dest = "$TargetDir\$skillName"
-    New-Item -ItemType Directory -Force -Path $dest | Out-Null
-    Copy-Item "$($_.FullName)\*" -Destination $dest -Force
-    Write-Host "  /$skillName"
+    if (Test-Path $dest) {
+        Remove-Item $dest -Recurse -Force
+    }
+    New-Item -ItemType SymbolicLink -Path $dest -Target $source | Out-Null
+    Write-Host "  /$skillName -> $source"
 }
 
 Write-Host ""

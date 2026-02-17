@@ -12,11 +12,18 @@ echo "Source: $SCRIPT_DIR/skills/"
 echo "Target: $TARGET_DIR"
 echo ""
 
+mkdir -p "$TARGET_DIR"
+
 for skill_dir in "$SCRIPT_DIR/skills"/*/; do
     skill_name=$(basename "$skill_dir")
-    mkdir -p "$TARGET_DIR/$skill_name"
-    cp "$skill_dir"* "$TARGET_DIR/$skill_name/"
-    echo "  /$skill_name"
+    target="$TARGET_DIR/$skill_name"
+    if [ -L "$target" ]; then
+        rm "$target"
+    elif [ -d "$target" ]; then
+        rm -rf "$target"
+    fi
+    ln -s "$skill_dir" "$target"
+    echo "  /$skill_name -> $skill_dir"
 done
 
 echo ""
