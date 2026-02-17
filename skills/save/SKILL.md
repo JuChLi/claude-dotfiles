@@ -29,7 +29,14 @@ allowed-tools: Bash, Read, Write, Glob, Grep
    - 讀取 `.claude/progress.md`，如果存在，將其完整內容**插入**到 `.claude/progress-history.md` 的**最前面**。
    - 在歸檔的段落上方加上 `---` 分隔線（第一筆不需要）。
    - 歷史檔案中越上面的紀錄越新。
-5. **寫入最新進度**：覆寫 `.claude/progress.md`，格式如下：
+5. **Commit 變更**（僅限 Git 專案，且有待提交的變更時）：
+   - 執行 `git add -A` 將所有變更加入 staging。
+   - 用簡潔的 commit message 執行 `git commit`，格式：`chore: save progress — {一句話摘要}`。
+   - 如果沒有任何變更可 commit，跳過此步驟。
+6. **Push 到遠端**（僅限 Git 專案，且有設定遠端 remote 時）：
+   - 執行 `git push`。
+   - 如果 push 失敗（例如沒有設定 upstream），告知使用者但不中斷流程。
+7. **寫入最新進度**：覆寫 `.claude/progress.md`，格式如下：
 
 ```markdown
 # 專案進度
@@ -104,7 +111,15 @@ allowed-tools: Bash, Read, Write, Glob, Grep
 {已知 bug、臨時 workaround、需要注意的事項，無則寫「無」}
 ```
 
-6. **回報結果**：告知使用者進度已儲存，簡要顯示工作摘要與待辦事項數量。如果有歸檔舊進度，一併告知。
+8. **確認 repo 狀態**（僅限 Git 專案）：
+   - 執行 `git status` 確認工作區是否乾淨。
+   - 執行 `git log --oneline -3` 確認最新 commit。
+   - 將結果納入回報。
+9. **回報結果**：告知使用者進度已儲存，簡要顯示：
+   - 工作摘要與待辦事項數量
+   - 如果有歸檔舊進度，一併告知
+   - Commit hash 與 push 結果
+   - Repo 最終狀態（乾淨 / 仍有未追蹤檔案）
 
 ## 注意事項
 

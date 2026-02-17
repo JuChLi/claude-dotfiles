@@ -1,2 +1,6 @@
 # Claude Code local settings (per-machine permissions)
 .claude/settings.local.json
+
+# Claude Code progress (personal working state)
+.claude/progress.md
+.claude/progress-history.md
