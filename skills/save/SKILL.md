@@ -17,25 +17,40 @@ allowed-tools: Bash, Read, Write, Glob, Grep
 
 ## 執行步驟
 
+每個步驟完成後，輸出一行包含 ✅ 的結果摘要，格式為：
+`✅ [N/9] 步驟名稱 — 結果說明`
+如果該步驟被跳過，使用 ⏭️ 代替 ✅。
+
 1. **確認專案根目錄**：根據上方的 Git 狀態確認目前所在的專案，如果不是 Git 專案也可以繼續。
-2. **建立目錄**：確保專案根目錄下有 `.claude/` 資料夾，沒有就建立。
-3. **設定 .gitignore**：如果專案是 Git repo，檢查 `.gitignore` 是否已包含進度檔案的排除規則。如果沒有，追加以下內容（不要覆蓋原有內容）：
+   - 完成後輸出：`✅ [1/9] 確認專案根目錄 — {專案路徑}（Git 專案 / 非 Git 專案）`
+
+2. **建立 .claude/ 資料夾**：確保專案根目錄下有 `.claude/` 資料夾，沒有就建立。
+   - 完成後輸出：`✅ [2/9] 建立 .claude/ 資料夾 — 已建立` 或 `✅ [2/9] 建立 .claude/ 資料夾 — 已存在`
+
+3. **檢查 .gitignore 設定**：如果專案是 Git repo，檢查 `.gitignore` 是否已包含進度檔案的排除規則。如果沒有，追加以下內容（不要覆蓋原有內容）：
    ```
    # Claude Code progress (personal working state)
    .claude/progress.md
    .claude/progress-history.md
    ```
+   - 完成後輸出：`✅ [3/9] 檢查 .gitignore 設定 — 已追加規則` 或 `✅ [3/9] 檢查 .gitignore 設定 — 已包含`
+
 4. **歸檔舊進度**：
    - 讀取 `.claude/progress.md`，如果存在，將其完整內容**插入**到 `.claude/progress-history.md` 的**最前面**。
    - 在歸檔的段落上方加上 `---` 分隔線（第一筆不需要）。
    - 歷史檔案中越上面的紀錄越新。
-5. **Commit 變更**（僅限 Git 專案，且有待提交的變更時）：
+   - 完成後輸出：`✅ [4/9] 歸檔舊進度 — 已歸檔至 progress-history.md` 或 `⏭️ [4/9] 歸檔舊進度 — 無舊進度`
+
+5. **提交變更到 Git**（僅限 Git 專案，且有待提交的變更時）：
    - 執行 `git add -A` 將所有變更加入 staging。
    - 用簡潔的 commit message 執行 `git commit`，格式：`chore: save progress — {一句話摘要}`。
-   - 如果沒有任何變更可 commit，跳過此步驟。
-6. **Push 到遠端**（僅限 Git 專案，且有設定遠端 remote 時）：
+   - 完成後輸出：`✅ [5/9] 提交變更到 Git — {commit hash}` 或 `⏭️ [5/9] 提交變更到 Git — 無變更`
+
+6. **推送到遠端**（僅限 Git 專案，且有設定遠端 remote 時）：
    - 執行 `git push`。
    - 如果 push 失敗（例如沒有設定 upstream），告知使用者但不中斷流程。
+   - 完成後輸出：`✅ [6/9] 推送到遠端 — 已推送至 origin/main` 或 `⏭️ [6/9] 推送到遠端 — 跳過（無遠端）`
+
 7. **寫入最新進度**：覆寫 `.claude/progress.md`，格式如下：
 
 ```markdown
@@ -111,15 +126,20 @@ allowed-tools: Bash, Read, Write, Glob, Grep
 {已知 bug、臨時 workaround、需要注意的事項，無則寫「無」}
 ```
 
+   - 完成後輸出：`✅ [7/9] 寫入最新進度 — 已覆寫 progress.md`
+
 8. **確認 repo 狀態**（僅限 Git 專案）：
    - 執行 `git status` 確認工作區是否乾淨。
    - 執行 `git log --oneline -3` 確認最新 commit。
    - 將結果納入回報。
-9. **回報結果**：告知使用者進度已儲存，簡要顯示：
+   - 完成後輸出：`✅ [8/9] 確認 repo 狀態 — 工作區乾淨` 或 `✅ [8/9] 確認 repo 狀態 — 仍有未提交變更`
+
+9. **回報結果**：在所有 ✅ 清單之後，輸出一段結果摘要，包含：
    - 工作摘要與待辦事項數量
    - 如果有歸檔舊進度，一併告知
    - Commit hash 與 push 結果
    - Repo 最終狀態（乾淨 / 仍有未追蹤檔案）
+   - 最後輸出：`✅ [9/9] 儲存完成！`
 
 ## 注意事項
 
